@@ -11,7 +11,7 @@ abstract class AbstractAction
     protected $controller;
     protected $parameters;    
 
-    abstract public function execute();   
+    abstract public function execute(...$params);   
 
     public function getController()
     {
