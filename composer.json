@@ -1,0 +1,25 @@
+{
+    "name": "osynapsy/osynapsy-laravel",
+    "version": "1.0.1",
+    "homepage": "http://www.osynapsy.net/laravel",
+    "type": "library",
+    "description": "Osynapsy html library",
+    "keywords": ["Osynapsy", "Html factory library", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pietro Celeste",
+            "email": "p.celeste@osynapsy.net",
+            "homepage": "https://github.com/osynapsy/osynapsy-laravel/wiki"
+        }
+    ],
+    "require": {
+        "php" : ">=7.2.0",
+        "osynapsy/osynapsy-html2" : "@stable"
+    },
+    "autoload" : {
+        "psr-4": {
+            "Osynapsy\\Laravel\\": "src/Osynapsy/Laravel/"
+        }
+    }
+}
