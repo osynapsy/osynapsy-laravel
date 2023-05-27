@@ -45,7 +45,8 @@ class ActionRunner
     
     protected function executeAction($actionId)
     {        
-        $actionClass = $this->getAction($actionId);
-        return (new $actionClass)->execute();
+        $actionClass = $this->getAction($actionId);        
+        $actionParams = request()->input('actionParameters');        
+        return (new $actionClass)->execute($actionParams ?? []);
     }
 }
