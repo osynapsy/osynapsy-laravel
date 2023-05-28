@@ -9,7 +9,8 @@ namespace Osynapsy\Laravel\Action;
 abstract class AbstractAction
 {
     protected $controller;
-    protected $parameters;    
+    protected $parameters;
+    protected $response;
 
     abstract public function execute(...$params);   
 
@@ -35,7 +36,7 @@ abstract class AbstractAction
 
     public function getResponse()
     {
-        return $this->getController()->getResponse();
+        return $this->response;
     }
 
     public function setController(Controller $controller)
@@ -46,6 +47,11 @@ abstract class AbstractAction
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+    }
+    
+    public function setResponse(ActionResponse $response)
+    {
+        $this->response = $response;
     }
 
     public function raiseException($message, $code = 501)

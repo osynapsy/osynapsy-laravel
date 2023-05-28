@@ -34,7 +34,7 @@ class ActionRunner
     public function execute()
     {
         $actionId = request()->header('Osynapsy-Action');
-        return empty($actionId) ? $this->executeDefaultAction() : $this->executeAction($actionId);                        
+        return empty($actionId) ? $this->executeDefaultAction() : $this->executeExternalAction($actionId);                        
     }
     
     protected function executeDefaultAction()
@@ -43,10 +43,16 @@ class ActionRunner
         return $function();
     }
     
-    protected function executeAction($actionId)
+    protected function executeExternalAction($actionId)
     {        
         $actionClass = $this->getAction($actionId);        
-        $actionParams = request()->input('actionParameters');        
-        return (new $actionClass)->execute($actionParams ?? []);
+        $actionParams = request()->input('actionParameters');
+        $action = new $actionClass();
+        $action->setResponse(new ActionResponse());
+        $response = $action->execute($actionParams ?? []);
+        if (!empty($response)) {
+            $action->getResponse()->alert($response);
+        }
+        return $action->getResponse()->send();
     }
 }
