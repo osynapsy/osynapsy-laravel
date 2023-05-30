@@ -76,9 +76,10 @@ abstract class AbstractView
         $bladeCode[] = $contentView;
         $bladeCode[] = "@endsection";
         $bladeCode[] = "@section('osynapsyjs')";
-        $bladeCode[] = '<link href="/assets/osynapsy/css/style.css?ver=0.8.7-DEV" rel="stylesheet" />';
-        $bladeCode[] = sprintf('<script src="/assets/osynapsy/js/Osynapsy.js?ver=0.8.7-DEV" id="osynapsyjs" token="%s"></script>', csrf_token());
+        $bladeCode[] = '<link href="/assets/vendor/osynapsy/css/style.css?ver=0.8.7-DEV" rel="stylesheet" />';
+        $bladeCode[] = sprintf('<script src="/assets/vendor/osynapsy/js/Osynapsy.js?ver=0.8.7-DEV" id="osynapsyjs" token="%s"></script>', csrf_token());
         $bladeCode[] = implode(PHP_EOL, $this->scripts);
+        $bladeCode[] = implode(PHP_EOL, $this->css);
         $bladeCode[] = "@endsection";
         return implode(PHP_EOL, $bladeCode).PHP_EOL;
     }
@@ -90,13 +91,13 @@ abstract class AbstractView
     
     public function addJs($filePath)
     {    
-        $script = sprintf('<script src="%s"><script>', $filePath);
+        $script = sprintf('<script src="%s"></script>', $filePath);
         $this->appendScript($script);
     }
     
     public function addJsCode($code)
     {
-        $script = sprintf("<script>\n%s\n<script>", $code);
+        $script = sprintf("<script>\n%s\n</script>", $code);
         $this->appendScript($script);
     }
     
@@ -115,7 +116,7 @@ abstract class AbstractView
            
     public function addStyle($style)
     {
-        $css = sprintf("<style>\n%s\n<style>",$style);
+        $css = sprintf("<style>\n%s\n</style>",$style);
         $this->appendCss($css);
     }
     
