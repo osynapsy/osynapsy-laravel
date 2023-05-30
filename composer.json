@@ -15,11 +15,11 @@
     ],
     "require": {
         "php" : ">=7.2.0",
-        "osynapsy/osynapsy-html2" : "@stable"
+        "osynapsy/osynapsy-html2" : "@stable"        
     },
     "autoload" : {
         "psr-4": {
-            "Osynapsy\\Laravel\\": "src/Osynapsy/Laravel/"
+            "Osynapsy\\Laravel\\": "src/Osynapsy/Laravel/"            
         }
     }
 }
