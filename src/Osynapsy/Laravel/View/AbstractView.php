@@ -4,6 +4,7 @@ namespace Osynapsy\Laravel\View;
 use Osynapsy\Html\Tag;
 use Osynapsy\Html\Component;
 use Osynapsy\Html\DOM;
+use Osynapsy\Laravel\ViewModel\AbstractViewModel;
 use Illuminate\Support\Facades\Blade;
 
 /**
@@ -12,11 +13,12 @@ use Illuminate\Support\Facades\Blade;
  * @author Pietro Celeste <pietro.celeste@gmail.com>
  */
 abstract class AbstractView
-{
+{    
     protected $layout;
     protected $title;
     protected $scripts = [];    
     protected $css = [];
+    protected $viewModel;
 
     abstract protected function init();       
 
@@ -33,24 +35,21 @@ abstract class AbstractView
     {
         $requires = DOM::getRequire();
         if (!empty($requires)) {            
-            foreach ($requires as $type => $urls) {
-                foreach ($urls as $url){
-                    switch($type) {
-                        case 'js':
-                            $this->addJs($url);
-                            break;
-                        case 'jscode':
-                            $this->addJsCode($url);
-                            break;
-                        case 'css':
-                            $this->addCss($url);
-                            break;
-                    }
-                }
-            }
+            $this->appendRequires($requires);
         }        
         $bladeCode = $this->bladeCodeFactory($contentView);
         return Blade::render($bladeCode);
+    }
+    
+    protected function appendRequires($requires)
+    {
+        foreach ($requires as $require) {
+            $url = $require[0];
+            $method = 'add'.$require[1];
+            if (method_exists($this, $method)) {
+                $this->{$method}($url);
+            }
+        }            
     }
     
     protected function renderComponents($strComponentsToRender)
@@ -95,7 +94,7 @@ abstract class AbstractView
         $this->appendScript($script);
     }
     
-    public function addJsCode($code)
+    public function addScript($code)
     {
         $script = sprintf("<script>\n%s\n</script>", $code);
         $this->appendScript($script);
@@ -127,6 +126,11 @@ abstract class AbstractView
         }
     }
     
+    protected function getViewModel() : AbstractViewModel
+    {
+        return $this->viewModel;
+    }
+    
     protected function setLayout($layout)
     {
         $this->layout = $layout;
@@ -135,6 +139,11 @@ abstract class AbstractView
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+    
+    public function setViewModel(AbstractViewModel $viewModel)
+    {
+        $this->viewModel = $viewModel;
     }
 }
 
