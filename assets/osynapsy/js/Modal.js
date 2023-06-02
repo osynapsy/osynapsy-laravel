@@ -1,6 +1,6 @@
 var Osynapsy = Osynapsy || {'modal' : {}};
 
-class Modal
+class OsynapsyModal
 {
     buttonCloseFactory()
     {
@@ -88,7 +88,8 @@ Osynapsy.modal.confirm = function(title, message, actionConfirm)
     let modalFactory = new Modal();
     let modal = modalFactory.create('amodal', title ? title : 'Conferma', message, actionConfirm);
     document.body.appendChild(modal);
-    $('#amodal').modal({'keyboard' : true});
+    Osynapsy.modal.instance = new bootstrap.Modal(document.getElementById('amodal'), { keyboard: true });
+    Osynapsy.modal.instance.show();
 };
 
 Osynapsy.modal.alert = function(title, message)
@@ -97,7 +98,8 @@ Osynapsy.modal.alert = function(title, message)
     let modalFactory = new Modal();
     let modal =  modalFactory.create('amodal', title ? title : 'Alert', message);
     document.body.appendChild(modal);
-    $('#amodal').modal({'keyboard' : true});
+    Osynapsy.modal.instance = new bootstrap.Modal(document.getElementById('amodal'), { keyboard: true });
+    Osynapsy.modal.instance.show();
 };
 
 Osynapsy.modal.window = function(title, url, width = '640px', height = '480px')
@@ -132,5 +134,8 @@ Osynapsy.modal.window = function(title, url, width = '640px', height = '480px')
         form.attr('target', target ? target : '');
         form.attr('method', method ? method : '');
     }
-    $('#amodal').modal({'keyboard' : true});
+    Osynapsy.modal.instance = new bootstrap.Modal(document.getElementById('amodal'), { keyboard: true });
+    Osynapsy.modal.instance.show();
 };
+
+Osynapsy.modal.instance = null;
