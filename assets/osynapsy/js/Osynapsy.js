@@ -244,7 +244,7 @@ var Osynapsy = new (function(){
             Osynapsy.include('History.js', function() { Osynapsy.History.save(); });
         }).on('click','.click-execute, .onclick-execute',function() {
             Osynapsy.action.execute(this);
-        }).on('click', '.cmd-back', function() {
+        }).on('click', '.command-back', function() {
             Osynapsy.include('History.js', function() { Osynapsy.History.back(); });
         }).on('blur','.blur-execute', function(){
             Osynapsy.action.execute(this);
