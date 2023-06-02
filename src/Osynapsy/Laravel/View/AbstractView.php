@@ -96,8 +96,10 @@ abstract class AbstractView
     
     public function addScript($code)
     {
-        $script = sprintf("<script>\n%s\n</script>", $code);
+        $script = new Tag('script');
+        $script->add($code);
         $this->appendScript($script);
+        return $script;
     }
     
     protected function appendScript($script)
