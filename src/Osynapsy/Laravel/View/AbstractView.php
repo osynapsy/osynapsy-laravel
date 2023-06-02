@@ -2,7 +2,6 @@
 namespace Osynapsy\Laravel\View;
 
 use Osynapsy\Html\Tag;
-use Osynapsy\Html\Component;
 use Osynapsy\Html\DOM;
 use Osynapsy\Laravel\ViewModel\AbstractViewModel;
 use Illuminate\Support\Facades\Blade;
@@ -57,7 +56,7 @@ abstract class AbstractView
         $componentIds = explode(';', $strComponentsToRender);                
         $response = new Tag('div', 'response');            
         foreach($componentIds as $id) {
-            $response->add(Component::getById($id));                    
+            $response->add(DOM::getById($id));                    
         }
         return $response;
     }
