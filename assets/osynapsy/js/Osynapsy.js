@@ -301,9 +301,11 @@ var Osynapsy = new (function(){
         if (componentsIDs.length === 1 && document.getElementById(componentsIDs[0])) {
             Osynapsy.waitMask.show(document.getElementById(componentsIDs[0]));
         }
-        let form = document.querySelector('form');
+        let forms = document.querySelectorAll('form');
+        let formData = new FormData(forms[forms.length - 1]);
+        formData.append('_token', document.getElementById('osynapsyjs').getAttribute('token'));
         let response = fetch(window.location.href, {
-            body: new FormData(form),
+            body: formData,
             method: 'post',
             headers: {
                 'Osynapsy-Html-Components': componentsIDs.join(';'),
