@@ -84,7 +84,7 @@ abstract class AbstractView
 
     public function __toString()
     {
-        return $this->render();
+        return (string) $this->render();
     }                
     
     public function addJs($filePath)
