@@ -46,10 +46,10 @@ class ActionRunner
     protected function executeExternalAction($actionId)
     {        
         $actionClass = $this->getAction($actionId);        
-        $actionParams = request()->input('actionParameters');
+        $actionParams = request()->input('actionParameters') ?? [];
         $action = new $actionClass();
         $action->setResponse(new ActionResponse());
-        $response = $action->execute($actionParams ?? []);
+        $response = $action->execute(...$actionParams);
         if (!empty($response)) {
             $action->getResponse()->alert($response);
         }
