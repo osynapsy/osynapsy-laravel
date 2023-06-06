@@ -11,7 +11,7 @@ use Osynapsy\Laravel\Action\AbstractAction;
 class UploadPhoto extends AbstractAction
 {
     public function execute(...$params)
-    {        
+    {
         $fieldId = $params[0];
         $fileFileldId = $fieldId . '_file';
         $filePath = request()->hasfile($fileFileldId) ? $this->saveFile(request()->file($fileFileldId)) : '';        
