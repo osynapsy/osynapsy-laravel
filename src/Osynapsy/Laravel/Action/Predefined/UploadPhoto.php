@@ -12,7 +12,7 @@ class UploadPhoto extends AbstractAction
 {
     public function execute(...$params)
     {        
-        $fieldId = $params[0][0];
+        $fieldId = $params[0];
         $fileFileldId = $fieldId . '_file';
         $filePath = request()->hasfile($fileFileldId) ? $this->saveFile(request()->file($fileFileldId)) : '';        
         $this->getResponse()->js(sprintf("document.getElementById('%s').value = '%s'", $fieldId, $filePath));
