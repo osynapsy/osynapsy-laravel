@@ -13,7 +13,7 @@ class AbstractViewModel
     
     public function getLaravelModel()
     {
-        $this->laravelModel;
+        return $this->laravelModel;
     }
     
     public function setLaravelModel($model)
@@ -29,7 +29,7 @@ class AbstractViewModel
     public function getValue($requestField, $dbField = null)
     {
         $field = empty($dbField) ? $requestField : $dbField;
-        $dbValue = $this->model ? $this->model->{$field} : null;
+        $dbValue = $this->laravelModel ? $this->getLaravelModel()->{$field} : null;
         return old($requestField, $dbValue);
     }
 
