@@ -25,4 +25,10 @@ class AbstractViewModel
         $dbValue = $this->model ? $this->model->{$field} : null;
         return old($field, $dbValue);
     }
+
+    public function doQuery($query, array $parameters = [])
+    {
+        $rs = \DB::select($query, $parameters);
+        return json_decode(json_encode($rs), true);
+    }
 }
