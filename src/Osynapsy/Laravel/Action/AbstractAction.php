@@ -1,6 +1,8 @@
 <?php
 namespace Osynapsy\Laravel\Action;
 
+use Osynapsy\Laravel\ViewModel\AbstractViewModel;
+
 /**
  * Description of AbstractAction
  *
@@ -11,6 +13,7 @@ abstract class AbstractAction
     protected $controller;
     protected $parameters;
     protected $response;
+    protected $viewModel;
 
     abstract public function execute(...$params);   
 
@@ -24,24 +27,19 @@ abstract class AbstractAction
         return $this->controller->getDb();
     }
 
-    public function getModel()
-    {
-        return $this->getController()->getModel();
-    }
-
     public function getParameter($key)
     {
         return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : null;
     }
 
+    public function getViewModel()
+    {
+        return $this->viewModel;
+    }
+
     public function getResponse()
     {
         return $this->response;
-    }
-
-    public function setController(Controller $controller)
-    {
-        $this->controller = $controller;
     }
 
     public function setParameters(array $parameters)
@@ -52,6 +50,11 @@ abstract class AbstractAction
     public function setResponse(ActionResponse $response)
     {
         $this->response = $response;
+    }
+
+    public function setViewModel(AbstractViewModel $model)
+    {
+        $this->viewModel = $model;
     }
 
     public function raiseException($message, $code = 501)
