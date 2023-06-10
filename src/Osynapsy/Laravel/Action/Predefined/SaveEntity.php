@@ -14,9 +14,14 @@ class SaveEntity extends AbstractAction
     {
         try {
             $this->getViewModel()->save();
-            $this->getResponse()->goto('back');
+            $this->closeView();
         } catch(\Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    protected function closeView()
+    {
+        $this->getResponse()->goto('back');
     }
 }
