@@ -10,12 +10,12 @@ class ActionRunner
 {
     protected $actions = [];
     
-    public function addAction($actionId, $strClass)
+    public function addAction($actionId, $strClass, $viewModel = null)
     {
         if (!is_subclass_of($strClass, AbstractAction::class)) {
             throw new \Exception(sprintf("Argument #2 (\$strClass) must be of type %s", $strClass));
         }
-        $this->actions[$actionId] = $strClass;        
+        $this->actions[$actionId] = [$strClass, $viewModel];
     }
     
     public function getAction($actionId)
@@ -45,10 +45,13 @@ class ActionRunner
     
     protected function executeExternalAction($actionId)
     {        
-        $actionClass = $this->getAction($actionId);        
+        list($actionClass, $viewModel) = $this->getAction($actionId);
         $actionParams = request()->input('actionParameters') ?? [];
         $action = new $actionClass();
         $action->setResponse(new ActionResponse());
+        if (!empty($viewModel)) {
+            $action->setViewModel(new $viewModel);
+        }
         $response = $action->execute(...$actionParams);
         if (!empty($response)) {
             $action->getResponse()->alert($response);
