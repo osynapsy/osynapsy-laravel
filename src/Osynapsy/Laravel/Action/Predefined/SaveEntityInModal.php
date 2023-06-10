@@ -19,7 +19,7 @@ class SaveEntityInModal extends SaveEntity
     {
         $componentIds = $this->getComponentIdsToRefresh();
         if (!empty($componentIds)) {
-            $this->getResponse()->js("parent.Osynapsy.refreshComponents(['%s']);", implode("','", $componentIds));
+            $this->getResponse()->js(sprintf("parent.Osynapsy.refreshComponents(['%s']);", implode("','", $componentIds)));
         }
         $this->getResponse()->js("parent.Osynapsy.modal.instance.hide();");
     }
