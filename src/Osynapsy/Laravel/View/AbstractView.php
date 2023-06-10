@@ -24,10 +24,22 @@ abstract class AbstractView
     public function render()
     {
         $contentView = $this->init();
+        if (!empty($this->viewModel)) {
+            $this->setComponentValues(DOM::getAllComponents());
+        }
         $strComponentsToRefresh = request()->header('Osynapsy-Html-Components');
         return empty($strComponentsToRefresh) 
                ? $this->renderFullView($contentView) 
                : $this->renderComponents($strComponentsToRefresh);        
+    }
+
+    protected function setComponentValues($componets)
+    {
+        foreach ($componets as $componentId => $component) {
+            if (method_exists($component,'setValue')) {                
+                $component->setValue($this->getViewModel()->getValue($componentId));
+            }
+        }
     }
     
     protected function renderFullView($contentView)
