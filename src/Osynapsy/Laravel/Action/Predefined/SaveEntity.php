@@ -6,7 +6,7 @@ use Osynapsy\Laravel\Action\AbstractAction;
 /**
  * Description of SaveEntity
  *
- * @author peter
+ * @author Pietro Celeste <pietro.celeste@gmail.com>
  */
 class SaveEntity extends AbstractAction
 {
