@@ -13,14 +13,19 @@ class SaveEntity extends AbstractAction
     public function execute(...$params)
     {
         try {
+            $this->validateUserInput(request());
             $this->getViewModel()->save();
-            $this->closeView();
+            $this->afterSave();
         } catch(\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    protected function closeView()
+    protected function validateUserInput($request)
+    {        
+    }
+
+    protected function afterSave()
     {
         $this->getResponse()->goto('back');
     }
