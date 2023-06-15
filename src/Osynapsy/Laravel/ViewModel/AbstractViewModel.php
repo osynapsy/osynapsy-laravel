@@ -74,7 +74,12 @@ class AbstractViewModel
         foreach ($this->fieldMap as $field) {
             $result[] = [$field->getDbName(), $field->getValue()];
             $model->{$field->getDbName()} = $field->getValue();
-        }        
+        }
         $model->save();
+    }
+
+    public function delete()
+    {
+        $this->getLaravelModel()->delete();
     }
 }
