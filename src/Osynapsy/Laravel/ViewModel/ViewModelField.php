@@ -40,7 +40,8 @@ class ViewModelField
 
     public function getValue()
     {
-        return request()->input($this->nameInRequest) ?? $this->defaultValue;
+        $requestValue = request()->has($this->nameInRequest) ? request()->input($this->nameInRequest) : null;
+        return $requestValue ?? $this->defaultValue;
     }
 
     public function getDbName()
