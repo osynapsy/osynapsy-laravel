@@ -4,8 +4,13 @@ class OsynapsyModal
 {
     buttonCloseFactory()
     {
-        let button = this.createElement('button', {'type' : 'button', 'class' : 'close', 'data-dismiss' : 'modal'});
-        button.innerHTML = '&times;';
+        let button = this.createElement('button', {
+            'type' : 'button', 
+            'class' : 'close btn-close', 
+            'data-bs-dismiss' : 'modal',
+            'data-dismiss' : 'modal'
+        });
+        //button.innerHTML = '&times;';
         return button;
     }
 
