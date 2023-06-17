@@ -12,8 +12,9 @@ class DeleteEntity extends AbstractAction
 {
    public function execute(...$params)
     {
-        try {            
-            $this->getViewModel()->delete();
+        try {
+            $this->beforeDelete();
+            $this->getViewModel()->getLaravelModel()->delete();
             $this->afterDelete();
         } catch(\Exception $e) {
             return $e->getMessage();
