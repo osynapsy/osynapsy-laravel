@@ -15,7 +15,7 @@ class SaveEntityInModal extends SaveEntity
         return [];
     }
 
-    protected function afterSave()
+    protected function afterSave($request, $id)
     {
         $componentIds = $this->getComponentIdsToRefresh();
         if (!empty($componentIds)) {
