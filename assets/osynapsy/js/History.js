@@ -4,29 +4,23 @@ Osynapsy.History =
 {
     save : function()
     {
-        var hst = [];
-        var arr = [];
-        if (sessionStorage.history){
-            hst = JSON.parse(sessionStorage.history);
-        }
-        document.querySelectorAll('input,select,textarea').each(function(elm){
-            //TODO implemente skip not history class .not('.history-skip')
-            switch (elm.getAttribute('type')) {
-                case 'submit':
-                case 'button':
-                case 'file':
-                    return true;
-                case 'checkbox':
-                    if (!$(this).is(':checked')) {
-                        return true;
-                    }
-                    break;
+        let hst = sessionStorage.history ? JSON.parse(sessionStorage.history) : [];
+        let fields = [];        
+        document.querySelectorAll('input,select,textarea').forEach(function(elm){
+            if (elm.classList.contains('history-skip')) {
+                return true;
             }
+            if (['submit', 'button', 'file'].includes(elm.getAttribute('type'))) {
+                return true;
+            }
+            if (elm.getAttribute('type') === 'checkbox' && elm.checked) {
+                return true;
+            }            
             if (elm.getAttribute('name')) {
-                arr.push([elm.name, elm.value]);
-            }
+                fields.push([elm.name, elm.value]);
+            }            
         });
-        hst.push({url : window.location.href, parameters : arr});
+        hst.push({url : window.location.href, parameters : fields});
         sessionStorage.history = JSON.stringify(hst);
     },
     back : function()
