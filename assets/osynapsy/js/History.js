@@ -9,8 +9,9 @@ Osynapsy.History =
         if (sessionStorage.history){
             hst = JSON.parse(sessionStorage.history);
         }
-        $('input,select,textarea').not('.history-skip').each(function(){
-            switch ($(this).attr('type')) {
+        document.querySelectorAll('input,select,textarea').each(function(elm){
+            //TODO implemente skip not history class .not('.history-skip')
+            switch (elm.getAttribute('type')) {
                 case 'submit':
                 case 'button':
                 case 'file':
@@ -21,8 +22,8 @@ Osynapsy.History =
                     }
                     break;
             }
-            if ($(this).attr('name')) {
-                arr.push([$(this).attr('name'), $(this).val()]);
+            if (elm.getAttribute('name')) {
+                arr.push([elm.name, elm.value]);
             }
         });
         hst.push({url : window.location.href, parameters : arr});
