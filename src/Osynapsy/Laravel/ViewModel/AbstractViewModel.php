@@ -8,9 +8,13 @@ namespace Osynapsy\Laravel\ViewModel;
  */
 class AbstractViewModel
 {
+    const BEHAVIOR_INSERT = 'insert';
+    const BEHAVIOR_UPDATE = 'update';
+
     public $entityId;
     protected $laravelModel;
-    protected $fieldMap = [];
+    protected $mapFields = [];
+    protected $behavior = self::BEHAVIOR_INSERT;
 
     public function __construct()
     {
@@ -30,8 +34,14 @@ class AbstractViewModel
     {        
         if (!empty($id)) {
             $model = $model->find($id);
+            $this->behavior = self::BEHAVIOR_UPDATE;
         }        
         $this->laravelModel = $model;
+    }
+
+    public function getBehavior()
+    {
+        return $this->behavior;
     }
 
     public function getEntityId()
@@ -61,25 +71,11 @@ class AbstractViewModel
     public function map($requestField, $dbField, $defaultValue = null)
     {
         $modelField = new ViewModelField($requestField, $dbField, $defaultValue);
-        return $this->fieldMap[$modelField->getId()] = $modelField;
+        return $this->mapFields[$modelField->getId()] = $modelField;
     }
 
-    public function save()
+    public function getMapFields()
     {
-        if (empty($this->fieldMap)) {
-            throw new \Exception('No fieldmap exists.');
-        }        
-        $model = $this->getLaravelModel();
-        $result = [];
-        foreach ($this->fieldMap as $field) {
-            $result[] = [$field->getDbName(), $field->getValue()];
-            $model->{$field->getDbName()} = $field->getValue();
-        }
-        $model->save();
-    }
-
-    public function delete()
-    {
-        $this->getLaravelModel()->delete();
+        return $this->mapFields;
     }
 }
