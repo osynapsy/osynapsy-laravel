@@ -51,7 +51,7 @@ class AbstractViewModel
     
     public function getValue($requestField)
     {
-        $dbField = array_key_exists($requestField, $this->fieldMap) ? $this->fieldMap[$requestField]->getDbName() : $requestField;
+        $dbField = array_key_exists($requestField, $this->mapFields) ? $this->mapFields[$requestField]->getDbName() : $requestField;
         $dbValue = $this->laravelModel ? $this->getLaravelModel()->{$dbField} : null;
         return old($requestField, $dbValue);
     }
