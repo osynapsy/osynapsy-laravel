@@ -67,13 +67,13 @@ class SaveEntity extends AbstractAction
     }
 
     protected function afterSave($request, $id)
-    {
-        $url = $request->url();
-        $arrurl = explode('/', $url);
-        if (end($arrurl) !== 'add') {
-            $this->getResponse()->goto('back');
-            return;
+    {        
+        $redirectUrl = 'back';
+        $urlPart = explode('/', $request->url());
+        if (end($urlPart) === 'add') {
+            $urlPart[array_key_last($urlPart)] = $id;
+            $redirectUrl = implode('/', $urlPart);
         }
-        $this->getResponse()->goto(str_replace('/add', '/'.$id, $url));
+        $this->getResponse()->goto($redirectUrl);
     }
 }
