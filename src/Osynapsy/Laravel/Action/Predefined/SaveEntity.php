@@ -13,20 +13,67 @@ class SaveEntity extends AbstractAction
     public function execute(...$params)
     {
         try {
-            $this->validateUserInput(request());
-            $this->getViewModel()->save();
-            $this->afterSave();
+            $request = request();
+            $mapFields = $this->getViewModel()->getMapFields();
+            $this->validateMapFields($mapFields);
+            $laravelModel = $this->getViewModel()->getLaravelModel();
+            $this->validateLaravelModel($laravelModel);            
+            $response = $this->beforeSave($request, $mapFields);
+            if (!empty($response)) {
+                return $response;
+            }
+            $id = $this->save($laravelModel, $mapFields);            
+            $this->afterSave($request, $id);
         } catch(\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    protected function validateUserInput($request)
-    {        
+    protected function validateMapFields($mapFields)
+    {
+        if (empty($mapFields)) {
+            $this->raiseException('No fieldmap exists.');
+        }
     }
 
-    protected function afterSave()
+    protected function validateLaravelModel($laravelModel)
     {
-        $this->getResponse()->goto('back');
+        if (empty($laravelModel)) {
+            $this->raiseException('No laravel model exists');
+        }
+    }   
+
+    protected function beforeSave($request, $mapFields)
+    {
+        $this->validateUserInput($request, $mapFields);
+    }
+
+    protected function validateUserInput($request, $mapFields)
+    {
+        $rules = [];
+        foreach ($mapFields as $fieldName => $modelField) {
+            $rules[$fieldName] = $modelField->getValidationRules();
+        }
+        $request->validate($rules);
+    }
+
+    protected function save($model, $mapFields)
+    {       
+        foreach ($mapFields as $field) {
+            $model->{$field->getDbName()} = $field->getValue();
+        }
+        $model->save();
+        return $model->id;
+    }
+
+    protected function afterSave($request, $id)
+    {
+        $url = $request->url();
+        $arrurl = explode('/', $url);
+        if (end($arrurl) !== 'add') {
+            $this->getResponse()->goto('back');
+            return;
+        }
+        $this->getResponse()->goto(str_replace('/add', '/'.$id, $url));
     }
 }
