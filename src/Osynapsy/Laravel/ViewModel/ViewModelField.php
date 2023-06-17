@@ -36,6 +36,30 @@ class ViewModelField
     public function required()
     {
         $this->checks[] = 'required';
+        return $this;
+    }
+
+    protected function maxLength($maxLength)
+    {
+        $this->checks[] = sprintf('max:%s', $maxLength);
+        return $this;
+    }
+
+    protected function isDate()
+    {
+        $this->checks['type'] = 'date';
+        return;
+    }
+
+    protected function isEmail()
+    {
+        $this->checks['type'] = 'email';
+        return;
+    }
+
+    public function getValidationRules()
+    {
+        return implode('|', $this->checks);
     }
 
     public function getValue()
